@@ -1,0 +1,278 @@
+version: 1
+default_environment: dev
+project_id: e6866a1e-95c0-4359-bb77-c97c6b4c1f46
+environments:
+- name: dev
+- name: staging
+- name: prod
+- name: events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_prratek_1
+          database: sources
+- name: subscription_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - subscription_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_subscription_prratek_1
+          database: sources
+- name: invoice_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - invoice_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_invoice_prratek_1
+          database: sources
+- name: customer_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - customer_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_customer_prratek_1
+          database: sources
+- name: charge_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - charge_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_charge_prratek_1
+          database: sources
+- name: payment_intent_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - payment_intent_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_payment_intent_prratek_1
+          database: sources
+- name: payment_method_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - payment_method_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_payment_method_prratek_1
+          database: sources
+- name: customer_source_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - customer_source_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_customer_source_prratek_1
+          database: sources
+- name: dispute_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - dispute_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_dispute_events_prratek_1
+          database: sources
+
+- name: payout_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - payout_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_payout_prratek_1
+          database: sources
+- name: radar_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - radar_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_radar_prratek_1
+          database: sources
+- name: review_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - review_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_review_prratek_1
+          database: sources
+- name: subscription_schedule_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - subscription_schedule_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_subscription_schedule_prratek_1
+          database: sources
+- name: setup_intent_events
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - setup_intent_events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_setup_intent_prratek_1
+          database: sources
+
+
+- name: subscriptions
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - subscriptions.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_subscriptions_prratek_1
+          database: sources
+- name: customers
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - customers.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_customers_prratek_1
+          database: sources
+- name: charges
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - charges.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_charges_prratek_1
+          database: sources
+- name: invoices
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - invoices.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_invoices_prratek_2
+          database: sources
+- name: payment_intents
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - payment_intents.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_payment_intents_prratek_1
+          database: sources
+- name: disputes
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - disputes.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_disputes_prratek_1
+          database: sources
+
+
+plugins:
+  extractors:
+  - name: tap-stripe
+    namespace: tap-stripe
+    executable: tap-stripe
+    capabilities:  # This will override the capabilities declared in the lockfile
+    - state
+    - discover
+    - catalog
+    - stream-maps
+    - about
+    pip_url: -e ../tap-stripe
+    config:
+      start_date: '2020-01-01T00:00:00Z'
+      account_id: acct_1K645mJ8XiPdkv6a # acct_1K645mJ8XiPdkv6a acct_16kCqtKS8TSoP9bD
+      api_key: ${TAP_STRIPE_CLIENT_SECRET}
+
+  loaders:
+  - name: target-clickhouse
+    variant: shaped-ai
+    pip_url: git+https://github.com/shaped-ai/target-clickhouse.git
+    config:
+      host: ${CLICKHOUSE_HOSTNAME}
+      port: 8123
+      username: ${CLICKHOUSE_USER}
+      password: ${CLICKHOUSE_PASSWORD}

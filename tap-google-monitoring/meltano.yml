@@ -1,0 +1,84 @@
+version: 1
+send_anonymous_usage_stats: true
+project_id: "tap-google-monitoring"
+default_environment: test
+environments:
+- name: test
+plugins:
+  extractors:
+  - name: "tap-google-monitoring"
+    namespace: "tap_google_monitoring"
+    pip_url: -e .
+    capabilities:
+    - state
+    - catalog
+    - discover
+    - about
+    - stream-maps
+
+    # TODO: Declare settings and their types here:
+    # settings:
+    # - name: username
+    #   label: Username
+    #   description: The username to use for authentication
+
+    # - name: password
+    #   kind: password
+    #   label: Password
+    #   description: The password to use for authentication
+    #   sensitive: true
+
+    # - name: start_date
+    #   kind: date_iso8601
+    #   label: Start Date
+    #   description: Initial date to start extracting data from
+
+    # # TODO: Declare required settings here:
+    # settings_group_validation:
+    # - [username, password]
+
+    # TODO: Declare default configuration values here:
+    config:
+      type: 'service_account'
+      project_id: 'lumin-production-services'
+      private_key_id: '47228641ad7b81317a7176bff94557a1dc0f9af9'
+      # private_key: |
+      #   -----BEGIN PRIVATE KEY-----
+      #   MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCZfsiMV1IT7k7r
+      #   FjEKDiizJMFswraU8OxM6ESC3OwyyWGkyW9A67AEnQ6D5k7ZkNBC9ToXqvshNsrJ
+      #   CyVBRiA54mYt7nZepr/cM1kWAmVKBL85W1l6n3cg1oLgc7E89EQTm8QcFApWMTAr
+      #   o/CTAcOZufYQNu9LV7i2AGh9LwAG1vHiZqK4VoUvCq5CYR45uUDMFP9pdf76/EOI
+      #   0nfYrGk40Rgs+q021G8k60JudQXtZ9Gbf0+pPZ4aio3vhhLVj6BXplj7Eecn7ORb
+      #   L6GIw/rX/phRvF90Wkc4b04LIYNL/oQ5Tp4SNO4sPqfWDDfmqPucwhCLqB4SvQ/G
+      #   pe7UcvwFAgMBAAECggEACeDvfkdrvbhOIEd5g339dOjDgWuXUvGd0PtNLCY/a1YA
+      #   8Jk9jZjoPKZxAIsqKErEzzJiI+jPUx1oIqqSzLx7Js6L00lFbqUJCbPM+CN8/60G
+      #   M5D4qsbS5MGkLaw0dsmlDKVZ6JFfnZl6fKyHN1GF6axetOocL3tR+iCqQ42VUQXw
+      #   haVX7rfmW6ogFVyO01Y2hYlQM+nJYZWHxe96k+LvtkJwhra6zbap2BqBn7cjsEpH
+      #   CKE389jV0JfzRPZc3LB8gXu+f3aT2MY6B7EwJNbVY1pHzOIkmDxl0QnE3iFIr05H
+      #   4PMYaoL2Zj9W7MT+6YlJGGswesKDwcOQRdMwkWrTdwKBgQDN3hHBSygvdFw+4DW+
+      #   ifZJXgt8NwmemXwe8Rgf/xdXk8dpEaTUqWFWbKSVgitFr1fDqNkbfvupW4gbX2Xb
+      #   d3hODjuENn8tS9g3pBgt5IdooCYSAHM3Z/0Cw20M569SYfzwtGj4j94pNVKFCH+u
+      #   eiqHUwQKOaTHeQBKxje3P9uc3wKBgQC+38qabiHGzKsSXA0JCoxhWN1feXoqqe9V
+      #   iO728u58hrYuX8sjJlTTn3sz+bSzZlDBbXhF7KUsALnN51YIYv8P437sFQ9QODDJ
+      #   xcv85AnGspctdfBM/5vZvU+qhUlqXcNaXwkHkKPRCkeVDdRWcs3n28lmp+/S7UEH
+      #   9vwTwQQfmwKBgDthyw1OeJD3p4QbeGU1tm0DS5zQ4110OHFUafkQw9LnNaYBCOKu
+      #   2Pzs6ayWl5TKNy6hDb74qe74EBKVOfRMSc96G4DPl2+haQTjuHXEbaqoR1L5/kIF
+      #   JN4fMN2AFvpUeXmVEJJiLVsFnn/xK6NQaeQO9iNc7UL8jDEFbBzXtqlRAoGAR80N
+      #   fMxC/nKNQ8nGyYjjR9dS5xBeSWBFfMqXAeRenA9cxtMYKi/IJxdOFD4xoG6zoB+a
+      #   58reU1AulOsZ7Ou4gPSWER7W9Nk+WRiD5KyvlMQnpF1COOTKbr0NE9sxw8Zjr0Ii
+      #   tmrNhNw2Ezbxkld7Z2XBPFGeIJ1JIkLhjljEQVMCgYArIH1fZ1gKfXNVUuk222j/
+      #   qan6OC57Bb1a/pF071aQoXtcPu4JnSis24NuMBhqve2fpn0FBsFehjTSatT4FMMw
+      #   gjeWEtZB2ZFO8Yc1gV6YiwUIWz134yiqVCzq7ROdlKXbta8kF2GjFA5d4C66vhyj
+      #   HAmkF31VTpdTkC1FtFxtTw==
+      #   -----END PRIVATE KEY-----
+      client_email: 'lumin-data-sa@lumin-production-services.iam.gserviceaccount.com'
+      client_id: '103554516666940121641'
+      metric_type: 'aiplatform.googleapis.com/publisher/online_serving/model_invocation_count'
+      resource_type: 'aiplatform.googleapis.com/PublisherModel'
+    select:
+      - invocation_metric.*
+
+  loaders:
+  - name: target-jsonl
+    variant: andyh1203
+    pip_url: target-jsonl

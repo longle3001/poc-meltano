@@ -1,0 +1,65 @@
+version: 1
+default_environment: dev
+project_id: e6866a1e-95c0-4359-bb77-c97c6b4c1f46
+environments:
+- name: dev
+- name: staging
+- name: prod
+- name: invocation_metric
+  config:
+    plugins:
+      extractors:
+      - name: tap-google-monitoring
+        config:
+          metric_type: aiplatform.googleapis.com/publisher/online_serving/model_invocation_count
+          resource_type: aiplatform.googleapis.com/PublisherModel
+        select:
+        - invocation_metric.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_gg_invocation_metric
+          database: sources
+
+
+plugins:
+  extractors:
+  - name: tap-google-monitoring
+    namespace: tap-google-monitoring
+    pip_url: -e ../tap-google-monitoring
+    executable: tap-google-monitoring
+    capabilities:  # This will override the capabilities declared in the lockfile
+    - state
+    - discover
+    - catalog
+    - stream-maps
+    - about
+    config:
+      type: service_account
+      project_id: lumin-production-services
+      client_email: lumin-data-sa@lumin-production-services.iam.gserviceaccount.com
+      private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCZfsiMV1IT7k7r\n\
+        FjEKDiizJMFswraU8OxM6ESC3OwyyWGkyW9A67AEnQ6D5k7ZkNBC9ToXqvshNsrJ\nCyVBRiA54mYt7nZepr/cM1kWAmVKBL85W1l6n3cg1oLgc7E89EQTm8QcFApWMTAr\n\
+        o/CTAcOZufYQNu9LV7i2AGh9LwAG1vHiZqK4VoUvCq5CYR45uUDMFP9pdf76/EOI\n0nfYrGk40Rgs+q021G8k60JudQXtZ9Gbf0+pPZ4aio3vhhLVj6BXplj7Eecn7ORb\n\
+        L6GIw/rX/phRvF90Wkc4b04LIYNL/oQ5Tp4SNO4sPqfWDDfmqPucwhCLqB4SvQ/G\npe7UcvwFAgMBAAECggEACeDvfkdrvbhOIEd5g339dOjDgWuXUvGd0PtNLCY/a1YA\n\
+        8Jk9jZjoPKZxAIsqKErEzzJiI+jPUx1oIqqSzLx7Js6L00lFbqUJCbPM+CN8/60G\nM5D4qsbS5MGkLaw0dsmlDKVZ6JFfnZl6fKyHN1GF6axetOocL3tR+iCqQ42VUQXw\n\
+        haVX7rfmW6ogFVyO01Y2hYlQM+nJYZWHxe96k+LvtkJwhra6zbap2BqBn7cjsEpH\nCKE389jV0JfzRPZc3LB8gXu+f3aT2MY6B7EwJNbVY1pHzOIkmDxl0QnE3iFIr05H\n\
+        4PMYaoL2Zj9W7MT+6YlJGGswesKDwcOQRdMwkWrTdwKBgQDN3hHBSygvdFw+4DW+\nifZJXgt8NwmemXwe8Rgf/xdXk8dpEaTUqWFWbKSVgitFr1fDqNkbfvupW4gbX2Xb\n\
+        d3hODjuENn8tS9g3pBgt5IdooCYSAHM3Z/0Cw20M569SYfzwtGj4j94pNVKFCH+u\neiqHUwQKOaTHeQBKxje3P9uc3wKBgQC+38qabiHGzKsSXA0JCoxhWN1feXoqqe9V\n\
+        iO728u58hrYuX8sjJlTTn3sz+bSzZlDBbXhF7KUsALnN51YIYv8P437sFQ9QODDJ\nxcv85AnGspctdfBM/5vZvU+qhUlqXcNaXwkHkKPRCkeVDdRWcs3n28lmp+/S7UEH\n\
+        9vwTwQQfmwKBgDthyw1OeJD3p4QbeGU1tm0DS5zQ4110OHFUafkQw9LnNaYBCOKu\n2Pzs6ayWl5TKNy6hDb74qe74EBKVOfRMSc96G4DPl2+haQTjuHXEbaqoR1L5/kIF\n\
+        JN4fMN2AFvpUeXmVEJJiLVsFnn/xK6NQaeQO9iNc7UL8jDEFbBzXtqlRAoGAR80N\nfMxC/nKNQ8nGyYjjR9dS5xBeSWBFfMqXAeRenA9cxtMYKi/IJxdOFD4xoG6zoB+a\n\
+        58reU1AulOsZ7Ou4gPSWER7W9Nk+WRiD5KyvlMQnpF1COOTKbr0NE9sxw8Zjr0Ii\ntmrNhNw2Ezbxkld7Z2XBPFGeIJ1JIkLhjljEQVMCgYArIH1fZ1gKfXNVUuk222j/\n\
+        qan6OC57Bb1a/pF071aQoXtcPu4JnSis24NuMBhqve2fpn0FBsFehjTSatT4FMMw\ngjeWEtZB2ZFO8Yc1gV6YiwUIWz134yiqVCzq7ROdlKXbta8kF2GjFA5d4C66vhyj\n\
+        HAmkF31VTpdTkC1FtFxtTw==\n-----END PRIVATE KEY-----"
+      client_id: '103554516666940121641'
+      private_key_id: 47228641ad7b81317a7176bff94557a1dc0f9af9
+  loaders:
+  - name: target-clickhouse
+    variant: shaped-ai
+    pip_url: git+https://github.com/shaped-ai/target-clickhouse.git
+    config:
+      host: ${CLICKHOUSE_HOSTNAME}
+      port: 8123
+      username: ${CLICKHOUSE_USER}
+      password: ${CLICKHOUSE_PASSWORD}

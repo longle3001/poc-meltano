@@ -1,0 +1,18 @@
+version: 1
+default_environment: dev
+project_id: aa999be8-3804-4bd9-90ea-8964c9b03edd
+environments:
+- name: dev
+- name: staging
+- name: prod
+plugins:
+  extractors:
+  - name: tap-jsonplaceholder
+    namespace: tap-jsonplaceholder
+    pip_url: -e ../tap-jsonplaceholder
+    executable: tap-jsonplaceholder
+  loaders:
+  - name: target-jsonl
+  
+    variant: andyh1203
+    pip_url: target-jsonl

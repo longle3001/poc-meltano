@@ -1,0 +1,88 @@
+version: 1
+default_environment: dev
+project_id: e6866a1e-95c0-4359-bb77-c97c6b4c1f46
+environments:
+- name: dev
+- name: staging
+- name: prod
+- name: pipeline__stripe___events_subscription
+  config:
+    plugins:
+      extractors:
+      - name: tap-stripe
+        select:
+        - events.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_stripe_events_subscription_4
+          database: sources
+
+
+plugins:
+  # extractors:
+  # - name: tap-stripe
+  #   executable: tap-stripe
+  #   namespace: tap-stripe
+  #   pip_url: git+https://github.com/longle3001/luminstripe.git
+  #   config:
+  #     start_date: '2024-08-01T00:00:00Z'
+  #     account_id: acct_1K645mJ8XiPdkv6a # acct_1K645mJ8XiPdkv6a
+  #     client_secret: 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
+  extractors:
+  - name: tap-stripe
+    # variant: singer-io
+    namespace: tap-stripe
+    executable: tap-stripe
+    capabilities:  # This will override the capabilities declared in the lockfile
+    - state
+    # - discover
+    # - catalog
+    # settings:  # These will be appended to the settings declared in the lockfile
+    # - name: my-new-setting
+    #   kind: object
+    #   value:
+    #     key: value
+    # pip_url: -e ../tap-stripe
+    pip_url: git+https://github.com/longle3001/luminstripe.git
+    config:
+      start_date: '2024-10-10T00:00:00Z'
+      account_id: acct_1K645mJ8XiPdkv6a
+      client_secret: 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
+      selected_stream: events
+    # catalog: catalog.json
+    # discover:
+  loaders:
+  - name: target-clickhouse
+    variant: shaped-ai
+    pip_url: git+https://github.com/shaped-ai/target-clickhouse.git
+    config:
+      host: ${CLICKHOUSE_HOSTNAME}
+      port: 8123
+      username: ${CLICKHOUSE_USER}
+      password: ${CLICKHOUSE_PASSWORD}
+      # username: clickhouse_operator
+
+
+  mappers:
+  - name: meltano-map-transformer
+    variant: meltano
+    pip_url: git+https://github.com/MeltanoLabs/meltano-map-transform.git
+    executable: meltano-map-transform
+    mappings:
+    - name: hash_email_stripe_events_subscription
+      config:
+        stream_maps:
+          events:
+            __filter__: type in ['customer.subscription.created', 'customer.subscription.deleted', 'customer.subscription.updated', 'customer.subscription.trial_will_end']
+        stream_map_config:
+          hash_seed: 01AWZh7A6DzGm6iJZZ2T
+        faker_config:
+          # set specific seed
+          seed: 0
+          # set specific locales
+          locale:
+          - en_US
+          - en_GB
+
+# template

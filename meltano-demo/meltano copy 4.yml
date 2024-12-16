@@ -1,0 +1,60 @@
+version: 1
+default_environment: dev
+project_id: e6866a1e-95c0-4359-bb77-c97c6b4c1f46
+environments:
+- name: dev
+- name: staging
+- name: prod
+- name: documents
+  config:
+    plugins:
+      extractors:
+      - name: tap-mongodb
+        config:
+          batch_size: 250
+        select:
+        - mongo_documents.*
+      loaders:
+      - name: target-clickhouse
+        config:
+          table_name: _meltano_raw_mongo_documents_local_3
+          database: sources
+          batch_size: 250
+          batch_size_rows: 250
+            # pre_load: "DROP TABLE IF EXISTS default.meltano_mongodb_documents_7;"
+
+plugins:
+  extractors:
+  - name: tap-mongodb
+    namespace: tap-mongodb
+    pip_url: -e ../tap-mongodb
+    executable: tap-mongodb
+    capabilities:  # This will override the capabilities declared in the lockfile
+    - state
+    - discover
+    - catalog
+    - stream-maps
+    - about
+    config:
+      mongo:
+        host: ${MONGODB_HOST}
+        port: 27017
+        username: ${MONGODB_USER}
+        password: ${MONGODB_PASSWORD}
+        authSource: admin
+      strategy: envelope
+      driver: native
+
+
+  loaders:
+  - name: target-clickhouse
+    variant: shaped-ai
+    pip_url: git+https://github.com/shaped-ai/target-clickhouse.git
+    config:
+      host: ${CLICKHOUSE_HOSTNAME}
+      port: 8123
+      username: ${CLICKHOUSE_USER}
+      password: ${CLICKHOUSE_PASSWORD}
+      # username: clickhouse_operator
+elt:
+  buffer_size: 52428800
